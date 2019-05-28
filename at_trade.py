@@ -169,8 +169,8 @@ def download( cfg ):
     retCode     = False
     filename_new= cfg.get('download','filename_new')
     filename_old= cfg.get('download','filename_old')
-    login       = cfg.get('download','login'    )
-    password    = cfg.get('download','password' )
+    #login       = cfg.get('download','login'    )
+    #password    = cfg.get('download','password' )
     url_lk      = cfg.get('download','url_lk'   )
     url_file    = cfg.get('download','url_file' )
 
@@ -249,17 +249,21 @@ def download( cfg ):
         elif os.name == 'nt':
             driver = webdriver.Firefox(ffprofile)
         driver.implicitly_wait(10)
-        
+        driver.set_page_load_timeout(15)
+
         driver.get(url_lk)
         time.sleep(2)
-        driver.get(url_file)
-        time.sleep(2)
-        driver.close()
-        #driver.find_element_by_link_text(u"Выход").click()        
-        driver.quit()
+        try:
+            driver.get(url_file)
+        except Exception as e:
+            log.debug('Exception: <' + str(e) + '>')
+        #driver.find_element_by_link_text(u"Выход").click()
 
     except Exception as e:
         log.debug('Exception: <' + str(e) + '>')
+
+    time.sleep(2)
+    driver.quit()
 
     dir_afte_download = set(os.listdir(download_path))
     new_files = list( dir_afte_download.difference(dir_befo_download))
