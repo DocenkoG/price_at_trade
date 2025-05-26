@@ -11,7 +11,7 @@ import openpyxl                      # Для .xlsx
 #import xlrd                          # для .xls
 from   price_tools import getCellXlsx, getCell, quoted, dump_cell, currencyType, openX, sheetByName
 import csv
-import requests, lxml.html
+#import requests, lxml.html
 
 
 
@@ -244,8 +244,13 @@ def download( cfg ):
                 ",application/xv+xml" +
                 ",application/excel")
         if os.name == 'posix':
-            #driver = webdriver.Firefox(ffprofile, executable_path=r'/usr/local/Cellar/geckodriver/0.19.1/bin/geckodriver')
-            driver = webdriver.Firefox(ffprofile, executable_path=r'/usr/local/bin/geckodriver')
+            #driver = webdriver.Firefox(ffprofile, executable_path=r'/usr/local/bin/geckodriver')
+            ffoptions = webdriver.FirefoxOptions()
+            ffoptions.set_preference("browser.download.folderList", 2)
+            # ffoptions.set_preference("browser.download.manager.showWhenStarting", False)
+            ffoptions.set_preference("browser.download.dir", download_path)
+            ffoptions.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv")
+            driver = webdriver.Firefox(options=ffoptions)
         elif os.name == 'nt':
             driver = webdriver.Firefox(ffprofile)
         driver.implicitly_wait(10)
