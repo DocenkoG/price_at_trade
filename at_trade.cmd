@@ -1,5 +1,2 @@
-chcp 1251
-
-"c:\Program Files\Python35\python.exe" at_trade.py
-
+python.exe at_trade.py
 rem pause
